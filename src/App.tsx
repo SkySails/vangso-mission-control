@@ -1,26 +1,9 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
+import React from "react";
+import { Cesium3DTileset, Viewer } from "resium";
+import { createOsmBuildings, createWorldTerrain, IonResource } from "cesium";
+const App = () => (
+  <Viewer full terrainProvider={createWorldTerrain()}>
+    <Cesium3DTileset url={IonResource.fromAssetId(96188)} />
+  </Viewer>
+);
 export default App;

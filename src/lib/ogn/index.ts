@@ -51,9 +51,9 @@ export interface M {
  * @example getPositionReports().then(data => console.log(data.speed))
  * @returns Promise<void>
  */
-export async function getPositionReports(): Promise<OGNReport[]> {
+export async function getPositionReports(): Promise<OGNReport | undefined> {
   const response: OGNResponse = await fetch(
-    "http://live.glidernet.org/lxml.php?a=1&b=58.556076&c=57.849136&d=14.891968&e=12.278595"
+    "http://live.glidernet.org/lxml.php?a=0&b=53.904153&c=51.392154&d=11.869629&e=3.525513"
   )
     .then((res) => res.text())
     .then((xml) => parseStringPromise(xml))
@@ -81,5 +81,5 @@ export async function getPositionReports(): Promise<OGNReport[]> {
 
     return report;
   });
-  return data;
+  return data.find((report) => report.cn === "_37");
 }

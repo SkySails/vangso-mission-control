@@ -53,7 +53,7 @@ export interface M {
  */
 export async function getPositionReports(): Promise<OGNReport[]> {
   const response: OGNResponse = await fetch(
-    "http://live.glidernet.org/lxml.php?a=0&b=52.582792&c=12.883667&d=49.993368&e=4.539551"
+    "http://live.glidernet.org/lxml.php?a=0&b=60.597756&c=18.654785&d=57.759868&e=12.041016"
   )
     .then((res) => res.text())
     .then((xml) => parseStringPromise(xml))
@@ -83,3 +83,15 @@ export async function getPositionReports(): Promise<OGNReport[]> {
   });
   return data;
 }
+
+// For use at bboxfinder.com
+
+// function bboxToSearchParams() {
+//   const bbox = document.querySelector("#mapbounds")?.innerHTML.split(",").reverse()
+//   return new URLSearchParams({
+//     b: bbox[0],
+//     c: bbox[1],
+//     d: bbox[2],
+//     e: bbox[3],
+//   })
+// }

@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/vangso-mission-control/static/css/main.a3242bf5.chunk.css",
-    "main.js": "/vangso-mission-control/static/js/main.ba4d834a.chunk.js",
-    "main.js.map": "/vangso-mission-control/static/js/main.ba4d834a.chunk.js.map",
+    "main.js": "/vangso-mission-control/static/js/main.71b2806f.chunk.js",
+    "main.js.map": "/vangso-mission-control/static/js/main.71b2806f.chunk.js.map",
     "runtime-main.js": "/vangso-mission-control/static/js/runtime-main.74d40a59.js",
     "runtime-main.js.map": "/vangso-mission-control/static/js/runtime-main.74d40a59.js.map",
     "static/js/2.b62e0396.chunk.js": "/vangso-mission-control/static/js/2.b62e0396.chunk.js",
@@ -382,6 +382,6 @@
     "static/js/runtime-main.74d40a59.js",
     "static/js/2.b62e0396.chunk.js",
     "static/css/main.a3242bf5.chunk.css",
-    "static/js/main.ba4d834a.chunk.js"
+    "static/js/main.71b2806f.chunk.js"
   ]
 }

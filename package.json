@@ -12,7 +12,6 @@
     "@types/node": "^12.20.7",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
-    "aprs-parser": "^1.0.7",
     "cesium": "^1.80.0",
     "cheap-ruler": "^3.0.1",
     "craco-cesium": "^1.2.0",

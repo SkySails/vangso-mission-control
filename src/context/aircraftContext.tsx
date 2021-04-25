@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import GliderTrackerClient, { Call, Report } from "../lib/glidertracker/client";
+import GliderTrackerClient from "../lib/glidertracker/client";
 const client = new GliderTrackerClient({ WebSocket });
 
 export type Aircraft = Report & Call;

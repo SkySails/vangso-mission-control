@@ -1,5 +1,4 @@
 import { BBox } from "cheap-ruler";
-import aprs from "aprs-parser";
 import {
   isGlider,
   getGlider,
@@ -10,39 +9,6 @@ import {
   getNewCall,
 } from "../aprs/tools";
 
-export interface GliderTrackerClientOptions {
-  WebSocket: any;
-}
-
-interface AircraftListeners {
-  [id: string]: (cb: any) => void;
-}
-
-export type Report = {
-  call: string;
-  climbrate: number;
-  altitude: number;
-  errors: number;
-  heading: number;
-  id: string;
-  lat: number;
-  lon: number;
-  receiver: string;
-  rotation: number;
-  signal: number;
-  source: number;
-  speed: number;
-  symbol: number;
-  timestamp: number;
-};
-
-export type Call = {
-  id: string;
-  call: string;
-  cn: string;
-  type: string;
-};
-
 export default class GliderTrackerClient {
   onClose: (() => void) | undefined;
   onTrack: ((id: string, fixes: any[]) => void) | undefined;
@@ -50,7 +16,6 @@ export default class GliderTrackerClient {
   onCall: ((call: Call) => void) | undefined;
 
   private ws: any;
-  private readonly parser = new aprs.APRSParser();
   private readonly options: GliderTrackerClientOptions;
   private listeners: AircraftListeners = {};
   private queryCalls: string[] = [];

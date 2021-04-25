@@ -33,7 +33,7 @@ export default function Statistics() {
   };
 
   return (
-    <aside>
+    <aside style={{ padding: "10px" }}>
       <table>
         <thead>
           <tr>

@@ -1,37 +1,20 @@
 import {
   Cartesian3,
+  Cartographic,
   Color,
   ConstantProperty,
   HeadingPitchRoll,
   LabelGraphics,
   Math as CMath,
+  sampleTerrainMostDetailed,
   Transforms,
 } from "cesium";
 import Cartesian2 from "cesium/Source/Core/Cartesian2";
 import LabelStyle from "cesium/Source/Scene/LabelStyle";
 import VerticalOrigin from "cesium/Source/Scene/VerticalOrigin";
-// import { DateTime } from "luxon";
-import React from "react";
-import { Entity } from "resium";
+import React, { useEffect, useState } from "react";
+import { Entity, useCesium } from "resium";
 import { Aircraft } from "../context/aircraftContext";
-
-// function log(
-//   time: string,
-//   id: string,
-//   lon: number,
-//   lat: number,
-//   alt: number,
-//   speed?: number
-// ) {
-//   console.log(
-//     time,
-//     id,
-//     lon.toFixed(6),
-//     lat.toFixed(6),
-//     speed ? Math.round(speed) + "km/h" : "??? km/h",
-//     Math.round(alt) + "m"
-//   );
-// }
 
 export default function Tracked({
   data,
@@ -47,14 +30,23 @@ export default function Tracked({
     data.heading,
     data.rotation,
   ];
+  const [elevation, setElevation] = useState(0);
+  const { viewer } = useCesium();
+
+  useEffect(() => {
+    if (viewer && lon && lat) {
+      sampleTerrainMostDetailed(viewer.terrainProvider, [
+        Cartographic.fromDegrees(lon, lat, 0),
+      ]).then((data) => setElevation(data[0].height));
+    }
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, [alt]);
 
   if (typeof lon !== "number") return null;
 
-  const cartesianPosition = Cartesian3.fromDegrees(
-    lon,
-    lat,
-    (alt + 20) / 3.281
-  );
+  const altitude = Math.max(elevation, alt);
+
+  const cartesianPosition = Cartesian3.fromDegrees(lon, lat, altitude);
 
   const h = CMath.toRadians(heading - 90);
   const p = 0;

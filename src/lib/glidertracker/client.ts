@@ -1,18 +1,59 @@
 import { BBox } from "cheap-ruler";
 import aprs from "aprs-parser";
+import {
+  isGlider,
+  getGlider,
+  isTrackUpdate,
+  isLastSeen,
+  isPing,
+  isCallUpdate,
+  getNewCall,
+} from "../aprs/tools";
 
 export interface GliderTrackerClientOptions {
   WebSocket: any;
 }
 
+interface AircraftListeners {
+  [id: string]: (cb: any) => void;
+}
+
+export type Report = {
+  call: string;
+  climbrate: number;
+  altitude: number;
+  errors: number;
+  heading: number;
+  id: string;
+  lat: number;
+  lon: number;
+  receiver: string;
+  rotation: number;
+  signal: number;
+  source: number;
+  speed: number;
+  symbol: number;
+  timestamp: number;
+};
+
+export type Call = {
+  id: string;
+  call: string;
+  cn: string;
+  type: string;
+};
+
 export default class GliderTrackerClient {
   onClose: (() => void) | undefined;
   onTrack: ((id: string, fixes: any[]) => void) | undefined;
-  onRecord: ((record: any) => void) | undefined;
+  onReport: ((report: Report) => void) | undefined;
+  onCall: ((call: Call) => void) | undefined;
 
   private ws: any;
   private readonly parser = new aprs.APRSParser();
   private readonly options: GliderTrackerClientOptions;
+  private listeners: AircraftListeners = {};
+  private queryCalls: string[] = [];
 
   constructor(options: GliderTrackerClientOptions) {
     this.options = options;
@@ -41,6 +82,16 @@ export default class GliderTrackerClient {
     }
   }
 
+  sendQueue() {
+    if (this.queryCalls.length > 0) {
+      const query = this.queryCalls.shift() as string;
+      this.send(query);
+      setTimeout(() => {
+        this.sendQueue();
+      }, 333);
+    }
+  }
+
   disconnect() {
     if (this.ws) {
       this.ws.close();
@@ -64,8 +115,19 @@ export default class GliderTrackerClient {
     );
   }
 
+  addListenerForId(id: string, fn: (report: Report) => void) {
+    this.listeners[id] = fn;
+    return () => {
+      delete this.listeners[id];
+    };
+  }
+
+  lookupGlider(id: string, call: string) {
+    this.send("CALL?" + id + "/" + call + "|");
+  }
+
   private handleMessage(message: string) {
-    if (message.startsWith("TRACK:")) {
+    if (isTrackUpdate(message) && this.onTrack) {
       let parts = message.split("|");
       let id = parts.shift()!.slice(6);
       let fixes = parts.filter(Boolean).map((str) => {
@@ -77,13 +139,18 @@ export default class GliderTrackerClient {
         return { lat, lon, alt, time };
       });
 
-      if (this.onTrack) this.onTrack(id, fixes);
-    } else if (message.includes(">APRS")) {
-      let record = this.parser.parse(message);
-      if (this.onRecord) this.onRecord(record);
-    } else if (message.startsWith("SEEN:")) {
-      console.log(message);
-    } else if (message === "PING?!?") {
+      this.onTrack(id, fixes);
+    } else if (isGlider(message)) {
+      let report = getGlider(message);
+      this.listeners[report.id] && this.listeners[report.id](report);
+      this.onReport && this.onReport(report);
+    } else if (isCallUpdate(message)) {
+      const call = getNewCall(message);
+      // console.info("Recieved call:", call);
+      this.onCall && this.onCall(call);
+    } else if (isLastSeen(message)) {
+      // console.log(message);
+    } else if (isPing(message)) {
       this.send("PONG!?!");
     }
   }

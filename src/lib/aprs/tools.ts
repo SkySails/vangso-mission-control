@@ -71,7 +71,7 @@ export function isRX(message: string) {
 }
 
 export function getGlider(message: string) {
-  var glider = {
+  let glider = {
     call: "",
     receiver: "",
     id: "",
@@ -89,40 +89,40 @@ export function getGlider(message: string) {
     timestamp: 0,
   };
   // call
-  var callResult = message.match(/([^>]+)/);
+  let callResult = message.match(/([^>]+)/);
   if (callResult != null) {
     glider.call = callResult[1];
   }
 
   // Receiver
-  var rxResult = message.match(/(?:,)([a-zA-Z0-9]+)(?::\/)/);
+  let rxResult = message.match(/(?:,)([a-zA-Z0-9]+)(?::\/)/);
   if (rxResult != null) {
     glider.receiver = rxResult[1];
   }
 
   // id
-  var idResult = message.match(/(?: id)([a-fA-f0-9]+)/);
+  let idResult = message.match(/(?: id)([a-fA-f0-9]+)/);
   if (idResult != null) {
     glider.id = idResult[1];
   }
 
   // timestamp
-  var tsResult = message.match(/(?:\/)(\d+)(?:h)/);
+  let tsResult = message.match(/(?:\/)(\d+)(?:h)/);
   if (tsResult != null) {
     glider.timestamp = DateTime.fromFormat(tsResult[1], "HHmmss").toMillis();
   }
 
   //try to decode additional accuracy
-  var addLat = "0";
-  var addLon = "0";
-  var ltlonResult = message.match(/(?: !W)(\d)(\d)(?:!)/);
+  let addLat = "0";
+  let addLon = "0";
+  let ltlonResult = message.match(/(?: !W)(\d)(\d)(?:!)/);
   if (ltlonResult != null) {
     addLat = ltlonResult[1];
     addLon = ltlonResult[2];
   }
 
   // lat
-  var latResult = message.match(/(?:h)(\d+\.\d+)(?:[NS])/);
+  let latResult = message.match(/(?:h)(\d+\.\d+)(?:[NS])/);
   if (latResult != null) {
     glider.lat = ddmm2deg(latResult[1] + addLat);
   }
@@ -131,7 +131,7 @@ export function getGlider(message: string) {
   }
 
   // lon
-  var lonResult = message.match(/(?:[NS].)(\d+\.\d+)(?:[EW])/);
+  let lonResult = message.match(/(?:[NS].)(\d+\.\d+)(?:[EW])/);
   if (lonResult != null) {
     glider.lon = ddmm2deg(lonResult[1] + addLon);
   }
@@ -140,44 +140,44 @@ export function getGlider(message: string) {
   }
 
   // altitude
-  var altResult = message.match(/(?:\/A=)(\d+)/);
+  let altResult = message.match(/(?:\/A=)(\d+)/);
   if (altResult != null) {
-    glider.altitude = parseInt(altResult[1]);
+    glider.altitude = parseInt(altResult[1]) / 3.281;
   }
 
   // heading and speed
-  var hsResult = message.match(/(\d+)(?:\/)(\d+)(?:\/)/);
+  let hsResult = message.match(/(\d+)(?:\/)(\d+)(?:\/)/);
   if (hsResult != null) {
     glider.heading = parseInt(hsResult[1]);
     glider.speed = parseInt(hsResult[2]);
   }
 
   // climbrate
-  var vsResult = message.match(/(?: )([+-]\d+)(?:fpm)/);
+  let vsResult = message.match(/(?: )([+-]\d+)(?:fpm)/);
   if (vsResult != null) {
     glider.climbrate = parseInt(vsResult[1]);
   }
 
   // rotation
-  var rotResult = message.match(/(?: )([+-]\d+\.\d+)(?:rot)/);
+  let rotResult = message.match(/(?: )([+-]\d+\.\d+)(?:rot)/);
   if (rotResult != null) {
     glider.rotation = parseFloat(rotResult[1]);
   }
 
   // signal strength
-  var dbResult = message.match(/(?: )(\d+\.\d+)(?:dB)/);
+  let dbResult = message.match(/(?: )(\d+\.\d+)(?:dB)/);
   if (dbResult != null) {
     glider.signal = parseFloat(dbResult[1]);
   }
 
   // error
-  var errResult = message.match(/(?: )(\d+)(?:e)/);
+  let errResult = message.match(/(?: )(\d+)(?:e)/);
   if (errResult != null) {
     glider.errors = parseInt(errResult[1]);
   }
 
   /* symbol
-  var result = message.match(/(?:\d+\.\d+[NS])(.)(?:\d+\.\d+[EW])(.)/);
+  let result = message.match(/(?:\d+\.\d+[NS])(.)(?:\d+\.\d+[EW])(.)/);
   if(result != null){
     glider.symbol = result[1] + result[2];
   }*/

@@ -25,7 +25,7 @@ export default class GliderTrackerClient {
   }
 
   connect() {
-    this.ws = new this.options.WebSocket("ws://glidertracker.de:3389/");
+    this.ws = new this.options.WebSocket("wss://glidertracker.de:8080/");
 
     this.ws.onclose = () => {
       this.ws = null;

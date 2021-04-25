@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { useAircrafts } from "../../context/aircraftContext";
 import usePrevious from "../../hooks/usePrevious";
 
-type SortedField = null | "cn" | "speed" | "altitude";
+type SortedField = null | "cn" | "speed" | "altitude" | "call" | "climbrate";
 
 export default function Statistics() {
   const [sortedField, setSortedField] = useState<SortedField>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
-  const { aircraft } = useAircrafts();
+  const { aircraft, setTrackedAircraft, trackedAircraft } = useAircrafts();
 
-  let sortedAircraft = [...Object.values(aircraft)];
+  let sortedAircraft = Object.values(aircraft).filter((val) => val.altitude);
 
   if (sortedField) {
     sortedAircraft.sort((a, b) => {
@@ -34,11 +34,13 @@ export default function Statistics() {
 
   return (
     <aside style={{ padding: "10px" }}>
-      <table>
+      <table className="overview-table" style={{ textAlign: "left" }}>
         <thead>
           <tr>
+            <th onClick={() => onSort("call")}>Callsign</th>
             <th onClick={() => onSort("cn")}>CN</th>
             <th onClick={() => onSort("speed")}>Speed</th>
+            <th onClick={() => onSort("climbrate")}>vs</th>
             <th onClick={() => onSort("altitude")}>Altitude</th>
           </tr>
         </thead>
@@ -47,11 +49,20 @@ export default function Statistics() {
             <tr
               onAnimationEnd={(e) => e.currentTarget.classList.remove("flash")}
               key={`${data.id}-${data.cn}-${data.type}`}
+              onClick={() => setTrackedAircraft(data.id)}
+              style={
+                trackedAircraft === data.id
+                  ? {
+                      background: "rgba(0, 162, 255, 0.4)",
+                    }
+                  : undefined
+              }
             >
               <Cell value={data.call} />
               <Cell value={data.cn} />
-              <Cell value={data.speed} />
-              <Cell value={(data.altitude / 3.281).toFixed(1) as string} />
+              <Cell value={Math.round(data.speed * 1.852)} />
+              <Cell value={(data.climbrate / 60).toFixed(1) as string} />
+              <Cell value={data.altitude} />
             </tr>
           ))}
         </tbody>

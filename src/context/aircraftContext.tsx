@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { omit } from "../lib/commonUtil";
 import GliderTrackerClient from "../lib/glidertracker/client";
 const client = new GliderTrackerClient({ WebSocket });
 
@@ -12,13 +13,15 @@ export interface AircraftContextType {
   aircraft: AircraftList;
   setAircraftWithId: (id: string, report: any) => void;
   client: GliderTrackerClient;
+  trackedAircraft: Aircraft["id"] | undefined;
+  setTrackedAircraft: (id: Aircraft["id"]) => void;
 }
 
 export const AircraftContext = createContext<AircraftContextType>(undefined!);
 
 function connect() {
   client.connect().then(() => {
-    client.setView([14.898834, 59.130863, 17.512207, 59.834465]);
+    client.setView([4.020996, 55.646599, 24.927979, 61.41775]);
 
     console.log("Connection established.");
 
@@ -47,6 +50,9 @@ export default function AircraftProvider({
       return {};
     }
   });
+  const [trackedAircraft, setTrackedAircraft] = useState<
+    Aircraft["id"] | undefined
+  >(undefined);
 
   const setAircraftWithId = (id: string, report: any) => {
     setAircraft({
@@ -58,7 +64,7 @@ export default function AircraftProvider({
     });
   };
 
-  client.onReport = (report) => {
+  client.onReport = async (report) => {
     if (!aircraft[report.id]) {
       // Aircraft not registered, send CALL req on websocket to get information
       console.info(
@@ -66,7 +72,7 @@ export default function AircraftProvider({
       );
       client.lookupGlider(report.id, report.call);
     } else {
-      setAircraftWithId(report.id, report);
+      setAircraftWithId(report.id, omit(report, ["call"]));
     }
   };
 
@@ -93,6 +99,8 @@ export default function AircraftProvider({
         setAircraftWithId,
         aircraft,
         client,
+        trackedAircraft,
+        setTrackedAircraft,
       }}
     >
       {children}

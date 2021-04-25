@@ -33,21 +33,32 @@ import { Aircraft } from "../context/aircraftContext";
 //   );
 // }
 
-export default function Tracked({ data }: { data: Aircraft }) {
-  let [lon, lat, alt, heading] = [
+export default function Tracked({
+  data,
+  tracked,
+}: {
+  data: Aircraft;
+  tracked?: boolean;
+}) {
+  let [lon, lat, alt, heading, roll] = [
     data.lon,
     data.lat,
     data.altitude,
     data.heading,
+    data.rotation,
   ];
 
   if (typeof lon !== "number") return null;
 
-  const cartesianPosition = Cartesian3.fromDegrees(lon, lat, alt + 20);
+  const cartesianPosition = Cartesian3.fromDegrees(
+    lon,
+    lat,
+    (alt + 20) / 3.281
+  );
 
   const h = CMath.toRadians(heading - 90);
   const p = 0;
-  const r = 0;
+  const r = roll / 6;
 
   const hpr = new HeadingPitchRoll(h, p, r);
 
@@ -80,6 +91,7 @@ export default function Tracked({ data }: { data: Aircraft }) {
           verticalOrigin: VerticalOrigin.BOTTOM,
         })
       }
+      {...{ tracked }}
     />
   );
 }

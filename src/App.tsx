@@ -20,7 +20,8 @@ const App = () => {
         style={{ flex: 1 }}
         terrainProvider={createWorldTerrain()}
         extend={viewerCesiumInspectorMixin}
-        shouldAnimate={true}
+        animation={false}
+        timeline={false}
       >
         <Cesium3DTileset url={IonResource.fromAssetId(96188)} />
         <CameraFlyTo duration={0} destination={DEFAULT_LOCATION} />

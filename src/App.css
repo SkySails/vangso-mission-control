@@ -14,3 +14,16 @@
     background: transparent;
   }
 }
+
+.overview-table tbody tr:hover {
+  background: rgba(0, 0, 0, 0.164);
+  cursor: pointer;
+}
+
+.overview-table tbody :nth-child(odd) {
+  background: rgba(0, 162, 255, 0.11);
+}
+
+.overview-table thead th {
+  cursor: pointer;
+}

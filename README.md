@@ -1,46 +1,53 @@
-# Getting Started with Create React App
+<p align="center">
+    <img src="https://raw.githubusercontent.com/SkySails/vangso-mission-control/master/readme-logo.svg?sanitize=true"
+        height="130" alt="Vängsö Mission Control">
+</p>
+<p align="center">
+  <img src="https://github.com/SkySails/vangso-mission-control/actions/workflows/deploy.yml/badge.svg" alt="CI Status" >
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Vängsö Mission Control (VMC) is a flight-tracker with focus on gliders. It uses CesiumJS to render gliders in 3D space, just like [flightradar24](https://www.flightradar24.com/).
+The data needed to render the gliders at the correct position and altitude comes from [GliderTracker](https://glidertracker.de/) and is delivered in real-time with the help of [WebSockets](https://www.wikiwand.com/en/WebSocket#:~:text=WebSocket%20is%20a%20computer%20communications,WebSocket%20is%20distinct%20from%20HTTP.)
 
-## Available Scripts
+## Future/Planned improvements
 
-In the project directory, you can run:
+- [ ] Add ability to focus on an aircraft by either selecting its identifier in a list or by selecting it directly
+- [ ] Add telemetry data charts for the selected aircraft (altitude, speed, etc.)
+- [ ] Add correct altitude measurements above the ground instead of above the ellipsoid main height
+- [ ] Add smoothing for aircraft movements to create a more real-time feel
+- [ ] Add 3D polylines in order to visualize the track of specific aircraft
+- [ ] Clamp aircraft to the ground when certain minimum requirements are met
 
-### `npm start`
+## Quickstart
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+> Make sure that you have a compatible npm version installed. Compatible versions are mentioned in the [requirements](#requirements)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+In order to get up and running, first run the following commands
 
-### `npm test`
+```bash
+ $ npm install
+ $ npm start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+When done, you should be able to access the page at [localhost:3000](http://localhost:3000).
 
-### `npm run build`
+## Requirements
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| Package | Version |
+| ------- | ------- |
+| npm     | v6.x.x  |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## FAQ
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<details>
+  <summary>When running <code>npm start</code>, I get an error telling me that a module named <code>chokidar</code> could not be found. Please help???</summary>
 
-### `npm run eject`
+Install `npm` version 6 or below. To do this, please issue the following command:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+ $ npm i -g npm@6.14.13
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Starting the project should now work as expeccted. For a list of available `npm` versions, please see the [version history](https://www.npmjs.com/package/npm?activeTab=versions)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+</details>

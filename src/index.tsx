@@ -4,6 +4,10 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import AircraftProvider from "./context/aircraftContext";
+import { Ion } from "cesium";
+
+Ion.defaultAccessToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwNzQ4ODIyNC1lMWRkLTQyNjktOTQwMS1hY2MzYjliMDRmNDUiLCJpZCI6NTIwMzgsImlhdCI6MTYxODQwNTAyNH0.kgVLR6n3y6l6BR4hzGbAka5tElPjyXiDWMC2IwPqbIk";
 
 ReactDOM.render(
   <React.StrictMode>
